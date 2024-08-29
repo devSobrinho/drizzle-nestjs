@@ -28,6 +28,7 @@ export const user = schemaMain.table('user', {
   password: d.varchar('password').notNull(),
   status: userStatusEnum('status').notNull(),
   tenantId: d.integer('tenant_id').references(() => tenant.id),
+  customerId: d.uuid('customer_id').references(() => customer.id),
 });
 
 export const userRelations = relations(user, ({ one, many }) => ({
@@ -36,7 +37,10 @@ export const userRelations = relations(user, ({ one, many }) => ({
     references: [tenant.id],
   }), // ONE TO MANY RELATION
   userRoles: many(userRoles), // *PIVOT TABLE*
-  customer: one(customer), // ONE TO ONE RELATION
+  customer: one(customer, {
+    fields: [user.customerId],
+    references: [customer.id],
+  }), // ONE TO MANY RELATION
 }));
 
 export type UserEntity = typeof user.$inferSelect;

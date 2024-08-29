@@ -12,18 +12,14 @@ export const customer = d.pgTable('customer', {
   lastName: d.varchar('last_name', { length: 256 }).notNull(),
   email: d.varchar('email', { length: 256 }).notNull(),
   phone: d.varchar('phone', { length: 256 }).notNull(),
-  userId: d.uuid('user_id').references(() => user.id),
   ...BaseEntityHelper.timestampColumns,
 });
 
 // RELATIONS
-export const customerRelations = relations(customer, ({ many, one }) => ({
+export const customerRelations = relations(customer, ({ many }) => ({
   orders: many(order), // MANY TO ONE RELATION
   customerFavoriteAddresses: many(customerFavoriteAddresses), // MANY TO ONE RELATION
-  user: one(user, {
-    fields: [customer.userId],
-    references: [user.id],
-  }), // ONE TO ONE RELATION
+  user: many(user), // MANY TO ONE RELATION
 }));
 
 export type CustomerEntity = typeof customer.$inferSelect;
