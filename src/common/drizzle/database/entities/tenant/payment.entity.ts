@@ -52,3 +52,6 @@ export const paymentRelations = relations(payment, ({ one }) => ({
     references: [order.id],
   }), // ONE TO ONE RELATION
 }));
+
+export type PaymentEntity = typeof payment.$inferSelect;
+export type PaymentEntityInsert = typeof payment.$inferInsert;

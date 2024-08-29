@@ -25,3 +25,6 @@ export const customerOrdersRelations = relations(customer, ({ many, one }) => ({
     references: [user.id],
   }), // ONE TO ONE RELATION
 }));
+
+export type CustomerEntity = typeof customer.$inferSelect;
+export type CustomerEntityInsert = typeof customer.$inferInsert;

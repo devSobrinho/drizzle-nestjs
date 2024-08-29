@@ -29,3 +29,6 @@ export const categoryProductRelations = relations(
     }),
   }),
 );
+
+export type CategoryProductEntity = typeof categoryProduct.$inferSelect;
+export type CategoryProductEntityInsert = typeof categoryProduct.$inferInsert;

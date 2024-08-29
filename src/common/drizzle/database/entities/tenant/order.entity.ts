@@ -49,3 +49,6 @@ export const orderRelations = relations(order, ({ one, many }) => ({
     references: [address.id],
   }), // ONE TO ONE RELATION
 }));
+
+export type OrderEntity = typeof order.$inferSelect;
+export type OrderEntityInsert = typeof order.$inferInsert;

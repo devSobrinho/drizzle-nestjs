@@ -25,3 +25,8 @@ export const customerFavoriteAddressesRelations = relations(
     customer: one(customer), // ONE TO MANY RELATION
   }),
 );
+
+export type CustomerFavoriteAddressesEntity =
+  typeof customerFavoriteAddresses.$inferSelect;
+export type CustomerFavoriteAddressesEntityInsert =
+  typeof customerFavoriteAddresses.$inferInsert;

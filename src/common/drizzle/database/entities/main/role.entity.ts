@@ -38,3 +38,6 @@ export const roleRelations = relations(role, ({ one, many }) => ({
   userRoles: many(userRoles), // *PIVOT TABLE*
   rolePermissions: many(rolePermissions), // *PIVOT TABLE*
 }));
+
+export type RoleEntity = typeof role.$inferSelect;
+export type RoleEntityInsert = typeof role.$inferInsert;

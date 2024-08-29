@@ -27,3 +27,6 @@ export const tenantRelations = relations(tenant, ({ many }) => ({
   users: many(user), // MANY TO ONE RELATION
   roles: many(role), // MANY TO ONE RELATION
 }));
+
+export type TenantEntity = typeof tenant.$inferSelect;
+export type TenantEntityInsert = typeof tenant.$inferInsert;

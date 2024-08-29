@@ -15,3 +15,6 @@ export const category = d.pgTable('category', {
 export const categoryRelations = relations(category, ({ many }) => ({
   categoryProducts: many(categoryProduct),
 }));
+
+export type CategoryEntity = typeof category.$inferSelect;
+export type CategoryEntityInsert = typeof category.$inferInsert;

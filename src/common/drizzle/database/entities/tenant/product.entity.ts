@@ -37,3 +37,6 @@ export const productRelations = relations(product, ({ many, one }) => ({
   }), // ONE TO ONE RELATION
   orderItem: many(orderItem), // *PIVOT CUSTOM* MANY TO ONE RELATION
 }));
+
+export type ProductEntity = typeof product.$inferSelect;
+export type ProductEntityInsert = typeof product.$inferInsert;

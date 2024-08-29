@@ -19,3 +19,6 @@ export const permissionRelations = relations(permission, ({ many }) => ({
   roles: many(role), // MANY TO MANY RELATION
   rolePermissions: many(rolePermissions), // *PIVOT TABLE*
 }));
+
+export type PermissionEntity = typeof permission.$inferSelect;
+export type PermissionEntityInsert = typeof permission.$inferInsert;

@@ -22,3 +22,6 @@ export const userRolesRelations = relations(userRoles, ({ one }) => ({
     references: [user.id],
   }),
 }));
+
+export type UserRolesEntity = typeof userRoles.$inferSelect;
+export type UserRolesEntityInsert = typeof userRoles.$inferInsert;

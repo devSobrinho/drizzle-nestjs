@@ -15,3 +15,6 @@ export const warehouse = d.pgTable('warehouse', {
 export const warehouseRelations = relations(warehouse, ({ many }) => ({
   inventories: many(inventory), // MANY TO ONE RELATION
 }));
+
+export type WarehouseEntity = typeof warehouse.$inferSelect;
+export type WarehouseEntityInsert = typeof warehouse.$inferInsert;

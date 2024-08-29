@@ -27,3 +27,6 @@ export const inventoryRelations = relations(inventory, ({ one }) => ({
     references: [warehouse.id],
   }), // ONE TO MANY RELATION
 }));
+
+export type InventoryEntity = typeof inventory.$inferSelect;
+export type InventoryEntityInsert = typeof inventory.$inferInsert;

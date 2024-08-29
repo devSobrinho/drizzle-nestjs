@@ -15,3 +15,6 @@ export const address = d.pgTable('address', {
 export const addressRelations = relations(address, ({ many }) => ({
   orders: many(order), // MANY TO ONE RELATION
 }));
+
+export type AddressEntity = typeof address.$inferSelect;
+export type AddressEntityInsert = typeof address.$inferInsert;

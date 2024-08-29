@@ -25,3 +25,6 @@ export const rolePermissionsRelations = relations(
     }),
   }),
 );
+
+export type RolePermissionsEntity = typeof rolePermissions.$inferSelect;
+export type RolePermissionsEntityInsert = typeof rolePermissions.$inferInsert;

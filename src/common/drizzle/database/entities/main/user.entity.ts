@@ -40,4 +40,4 @@ export const userRelations = relations(user, ({ one, many }) => ({
 }));
 
 export type UserEntity = typeof user.$inferSelect;
-export type NewUser = typeof user.$inferInsert;
+export type UserEntityInsert = typeof user.$inferInsert;
