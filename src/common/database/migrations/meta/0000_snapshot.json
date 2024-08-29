@@ -1,5 +1,5 @@
 {
-  "id": "490875d9-8711-4641-8204-acd22870bf59",
+  "id": "64c7c2ec-ded7-4fcb-a799-e2afe6e0a1d3",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -345,6 +345,12 @@
           "type": "integer",
           "primaryKey": false,
           "notNull": false
+        },
+        "customer_id": {
+          "name": "customer_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},
@@ -356,6 +362,19 @@
           "schemaTo": "main",
           "columnsFrom": [
             "tenant_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "user_customer_id_customer_id_fk": {
+          "name": "user_customer_id_customer_id_fk",
+          "tableFrom": "user",
+          "tableTo": "customer",
+          "columnsFrom": [
+            "customer_id"
           ],
           "columnsTo": [
             "id"
@@ -633,12 +652,6 @@
           "primaryKey": false,
           "notNull": true
         },
-        "user_id": {
-          "name": "user_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": false
-        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp",
@@ -655,22 +668,7 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {
-        "customer_user_id_user_id_fk": {
-          "name": "customer_user_id_user_id_fk",
-          "tableFrom": "customer",
-          "tableTo": "user",
-          "schemaTo": "main",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
+      "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
