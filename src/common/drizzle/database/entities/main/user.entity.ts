@@ -1,6 +1,7 @@
 import { relations } from 'drizzle-orm';
 import * as d from 'drizzle-orm/pg-core';
 import { tenant } from './tenant.entity';
+import { customer } from '../tenant';
 import { userRoles } from './user-roles.entity';
 import { BaseEntityHelper } from '../../helpers/base-entity.helper';
 
@@ -35,6 +36,7 @@ export const userRelations = relations(user, ({ one, many }) => ({
     references: [tenant.id],
   }), // ONE TO MANY RELATION
   userRoles: many(userRoles), // *PIVOT TABLE*
+  customer: one(customer), // ONE TO ONE RELATION
 }));
 
 export type UserEntity = typeof user.$inferSelect;
