@@ -27,7 +27,7 @@ export const user = schemaMain.table('user', {
   email: d.varchar('email').notNull().unique(),
   password: d.varchar('password').notNull(),
   status: userStatusEnum('status').notNull(),
-  tenantId: d.uuid('tenant_id').references(() => tenant.id),
+  tenantId: d.integer('tenant_id').references(() => tenant.id),
 });
 
 export const userRelations = relations(user, ({ one, many }) => ({

@@ -8,7 +8,7 @@ const schemaMain = d.pgSchema('main');
 
 // ------- TENANT TABLE ---------
 export const tenant = schemaMain.table('tenant', {
-  ...BaseEntityHelper.idPrimaryKey,
+  id: d.serial('id').primaryKey(),
   name: d.varchar('name', { length: 256 }),
   cep: d.varchar('cep', { length: 256 }),
   address: d.varchar('address', { length: 256 }),

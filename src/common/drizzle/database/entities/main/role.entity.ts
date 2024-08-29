@@ -24,7 +24,7 @@ export const role = schemaMain.table('role', {
   name: d.varchar('name').notNull(),
   description: d.varchar('description'),
   status: roleStatusEnum('status').notNull(),
-  tenantId: d.uuid('tenant_id').references(() => tenant.id),
+  tenantId: d.integer('tenant_id').references(() => tenant.id),
   ...BaseEntityHelper.timestampColumns,
 });
 
