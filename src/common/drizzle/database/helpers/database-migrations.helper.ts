@@ -6,7 +6,7 @@ import { Client } from 'pg';
 import * as schema from '../entities/entities.schema';
 
 export class DatabaseMigrationsHelper {
-  private static connectionString = process.env.DATABASE_URL;
+  private static connectionString = process.env.DB_URL;
 
   static async run(schemaName: string, migrationsFolder: string) {
     const client = new Client({

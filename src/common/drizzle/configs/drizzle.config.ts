@@ -7,6 +7,6 @@ export default defineConfig({
   // verbose: false,
   schemaFilter: process.env.DB_SCHEMA_NAME,
   dbCredentials: {
-    url: process.env.DATABASE_URL,
+    url: process.env.DB_URL,
   },
 });
