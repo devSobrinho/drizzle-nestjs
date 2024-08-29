@@ -27,6 +27,9 @@ export const user = schemaMain.table('user', {
   email: d.varchar('email').notNull().unique(),
   password: d.varchar('password').notNull(),
   status: userStatusEnum('status').notNull(),
+  passwordResetCode: d.varchar('password_reset_code'),
+  passwordResetExpiresAt: d.timestamp('password_reset_expires_at'),
+  avatarUrl: d.varchar('avatar_url'),
   tenantId: d.integer('tenant_id').references(() => tenant.id),
   customerId: d.uuid('customer_id').references(() => customer.id),
 });
