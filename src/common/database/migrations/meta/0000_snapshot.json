@@ -1,5 +1,5 @@
 {
-  "id": "f8c86708-cef2-4722-94b5-29c3b74fe8be",
+  "id": "4fff16be-77fc-4816-918a-8abe3b1640bf",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -130,7 +130,7 @@
         },
         "tenant_id": {
           "name": "tenant_id",
-          "type": "uuid",
+          "type": "integer",
           "primaryKey": false,
           "notNull": false
         },
@@ -175,10 +175,9 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "uuid",
+          "type": "serial",
           "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
+          "notNull": true
         },
         "name": {
           "name": "name",
@@ -343,7 +342,7 @@
         },
         "tenant_id": {
           "name": "tenant_id",
-          "type": "uuid",
+          "type": "integer",
           "primaryKey": false,
           "notNull": false
         }

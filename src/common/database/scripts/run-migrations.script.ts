@@ -1,7 +1,7 @@
 import 'dotenv/config';
-import { DatabaseMigrationsHelper } from '../database/helpers/database-migrations.helper';
+import { DatabaseMigrationsHelper } from '../helpers/database-migrations.helper';
 
-const migrationsFolder = './src/common/drizzle/migrations';
+const migrationsFolder = './src/common/database/migrations';
 
 async function startMigrations() {
   const schemas = ['tenant_default', 'tenant_1', 'tenant_2'];

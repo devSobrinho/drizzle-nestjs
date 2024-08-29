@@ -34,13 +34,13 @@ CREATE TABLE IF NOT EXISTS "main"."role" (
 	"name" varchar NOT NULL,
 	"description" varchar,
 	"status" "main"."status" NOT NULL,
-	"tenant_id" uuid,
+	"tenant_id" integer,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "main"."tenant" (
-	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"id" serial PRIMARY KEY NOT NULL,
 	"name" varchar(256),
 	"cep" varchar(256),
 	"address" varchar(256),
@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS "main"."user" (
 	"email" varchar NOT NULL,
 	"password" varchar NOT NULL,
 	"status" "main"."status" NOT NULL,
-	"tenant_id" uuid,
+	"tenant_id" integer,
 	CONSTRAINT "user_email_unique" UNIQUE("email")
 );
 --> statement-breakpoint

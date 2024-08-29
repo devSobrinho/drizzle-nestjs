@@ -2,6 +2,7 @@ import { Inject } from '@nestjs/common';
 import { eq, Table } from 'drizzle-orm';
 import { PostgresJsDatabase } from 'drizzle-orm/postgres-js';
 import { DatabaseHelper } from '../helpers/database.helper';
+import { PG_CONNECTION } from '../../pg-connection';
 
 export class BaseDao<
   TSchema extends Record<string, unknown>,
@@ -10,7 +11,7 @@ export class BaseDao<
   InferEntityInsert,
 > {
   constructor(
-    @Inject('DATABASE_CONNECTION')
+    @Inject(PG_CONNECTION)
     protected readonly db: PostgresJsDatabase<TSchema>,
     private readonly entity: Entity,
   ) {}

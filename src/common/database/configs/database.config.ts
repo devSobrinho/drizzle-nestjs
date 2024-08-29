@@ -4,12 +4,12 @@ import { IsInt, IsString, Min, MinLength, validateSync } from 'class-validator';
 
 @Injectable()
 export class DatabaseConfig {
-  static get schemaName() {
+  get schemaName() {
     const credentials = DatabaseConfig.credentials;
     return credentials.DB_SCHEMA_NAME;
   }
 
-  static get postgressqlConnection() {
+  get postgressqlConnection() {
     const credentials = DatabaseConfig.credentials;
     return `postgresql://${credentials.DB_USER}:${credentials.DB_PASSWORD}@${credentials.DB_HOST}:${credentials.DB_PORT}/${credentials.DB_NAME}`;
   }
