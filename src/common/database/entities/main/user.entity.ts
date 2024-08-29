@@ -32,7 +32,7 @@ export const user = schemaMain.table('user', {
 
 export const userRelations = relations(user, ({ one, many }) => ({
   tenant: one(tenant, {
-    fields: [user.id],
+    fields: [user.tenantId],
     references: [tenant.id],
   }), // ONE TO MANY RELATION
   userRoles: many(userRoles), // *PIVOT TABLE*

@@ -17,7 +17,7 @@ export const customer = d.pgTable('customer', {
 });
 
 // RELATIONS
-export const customerOrdersRelations = relations(customer, ({ many, one }) => ({
+export const customerRelations = relations(customer, ({ many, one }) => ({
   orders: many(order), // MANY TO ONE RELATION
   customerFavoriteAddresses: many(customerFavoriteAddresses), // MANY TO ONE RELATION
   user: one(user, {
