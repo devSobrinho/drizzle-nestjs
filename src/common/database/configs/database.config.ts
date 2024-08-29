@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { Transform } from 'class-transformer';
 import { IsInt, IsString, Min, MinLength, validateSync } from 'class-validator';
 
 @Injectable()
@@ -19,16 +18,20 @@ export class DatabaseConfig {
   }
 
   private static validateCredentials() {
-    const credentials = process.env;
-    const dto = new DatabaseCredentialsDTO();
-    Object.assign(dto, credentials);
+    const credentialsDto = new DatabaseCredentialsDTO();
+    Object.assign(credentialsDto, {
+      ...process.env,
+      DB_PORT: +process.env.DB_PORT,
+    });
 
-    const errors = validateSync(dto);
-    if (errors.length > 0) {
+    const errors = validateSync(credentialsDto, {
+      whitelist: true,
+    });
+
+    if (errors.length > 0)
       throw new Error(`Database credentials are invalid: ${errors}`);
-    }
 
-    return credentials;
+    return credentialsDto;
   }
 }
 
@@ -41,7 +44,6 @@ class DatabaseCredentialsDTO {
   DB_USER: string;
   @IsString()
   @MinLength(1)
-  @Transform(({ value }) => (typeof value === 'string' ? +value : value))
   DB_PASSWORD: string;
   @IsInt()
   @Min(0)
