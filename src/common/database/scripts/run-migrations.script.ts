@@ -1,13 +1,17 @@
 import 'dotenv/config';
 import { DatabaseMigrationsHelper } from '../helpers/database-migrations.helper';
+import { migrationReplaceAll } from './migration-replace.script';
 
-const migrationsFolder = './src/common/database/migrations';
+const migrationsFolderMain = './src/common/database/migrations/app';
 
 async function startMigrations() {
-  const schemas = ['tenant_default', 'tenant_1', 'tenant_2'];
   try {
+    await migrationReplaceAll();
+    console.log('[MAIN] Migrations complete');
+
+    const schemas = ['tenant_default', 'tenant_1', 'tenant_2'];
     for (const schemaName of schemas) {
-      await DatabaseMigrationsHelper.run(schemaName, migrationsFolder);
+      await DatabaseMigrationsHelper.runApp(schemaName, migrationsFolderMain);
     }
     console.log('[TENANT] All Migrations complete');
   } catch (error) {

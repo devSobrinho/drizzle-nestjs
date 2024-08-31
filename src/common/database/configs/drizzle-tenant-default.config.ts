@@ -2,8 +2,8 @@ import { defineConfig } from 'drizzle-kit';
 
 export default defineConfig({
   dialect: 'postgresql',
-  schema: [`${__dirname}/../entities/**/*.entity.ts`],
-  out: './src/common/database/migrations/app',
+  schema: [`${__dirname}/../entities/tenant/*.entity.ts`],
+  out: './src/common/database/migrations/tenant_default',
   // verbose: false,
   schemaFilter: process.env.DB_SCHEMA_NAME,
   dbCredentials: {

@@ -1,8 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
-(async () => {
-  const pathFolder = path.join(__dirname, '..', 'migrations');
+async function replacePublicFileSQL(pathFolder: string) {
   const files = await fs.promises.readdir(pathFolder);
   for (const file of files) {
     const filePath = path.join(pathFolder, file);
@@ -13,4 +12,17 @@ import * as path from 'path';
       await fs.promises.writeFile(filePath, newContent);
     }
   }
-})();
+}
+
+export async function migrationReplaceAll() {
+  const pathFolderApp = path.join(__dirname, '..', 'migrations', 'app');
+  const pathFolderTenantDefault = path.join(
+    __dirname,
+    '..',
+    'migrations',
+    'tenant_default',
+  );
+
+  await replacePublicFileSQL(pathFolderApp);
+  await replacePublicFileSQL(pathFolderTenantDefault);
+}
