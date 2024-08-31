@@ -8,6 +8,8 @@ import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 import { AuthService } from './auth.service';
 import { AuthLoginDTO, AuthResponseDTO } from './dtos/auth-login.dto';
 import { AuthRefreshTokenDTO } from './dtos/auth-refresh-token.dto';
+import { MessageResponseDTO } from 'src/common/interfaces/response-default';
+import { AuthRecoverPasswordDTO } from './dtos/auth-recover-parssword.dto';
 
 @ApiTags('Autenticação')
 @Controller('auth')
@@ -16,21 +18,13 @@ export class AuthController {
 
   @ApiResponseType(AuthResponseDTO)
   @PublicRouter()
-  @Post('')
+  @Post('login')
   async login(
     @Body() data: AuthLoginDTO,
     @Res({ passthrough: true }) response: Response,
   ) {
     const result = await this.authService.login(data);
     return this.responseAuthentication(result, response);
-  }
-
-  @ApiResponseType(AuthResponseDTO)
-  @UseGuards(JwtAuthGuard)
-  @PublicRouter()
-  @Post('register')
-  async register(@Body() data: AuthLoginDTO) {
-    return await this.authService.register(data);
   }
 
   @ApiResponseType(AuthResponseDTO)
@@ -42,6 +36,21 @@ export class AuthController {
   ) {
     const result = await this.authService.refreshToken(data.refreshToken);
     return this.responseAuthentication(result, response);
+  }
+
+  @ApiResponseType(MessageResponseDTO)
+  @UseGuards(JwtAuthGuard)
+  @PublicRouter()
+  @Post('register')
+  async register(@Body() data: AuthLoginDTO) {
+    return await this.authService.register(data);
+  }
+
+  @ApiResponseType(MessageResponseDTO)
+  @PublicRouter()
+  @Post('recover-password')
+  async recoverPassword(@Body() data: AuthRecoverPasswordDTO) {
+    return await this.authService.recoverPassword(data);
   }
 
   private responseAuthentication(data: AuthResponseDTO, response: Response) {
