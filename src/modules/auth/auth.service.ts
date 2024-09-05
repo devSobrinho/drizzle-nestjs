@@ -138,7 +138,7 @@ export class AuthService {
 
   private checkUserAuthorization(user: Partial<UserEntity>): void {
     if (!user) throw new UnauthorizedException('Dados inválido');
-    if (!user.tenantId) throw new UnauthorizedException('Dados inválido');
+    if (!user.tenantId) throw new UnauthorizedException('Usuário sem tenant');
     if (user.status === USER_STATUS_ENUM.BLOCKED)
       throw new UnauthorizedException('Usuário bloqueado');
     if (user.status === USER_STATUS_ENUM.PENDING)
