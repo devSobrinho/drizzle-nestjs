@@ -4,6 +4,7 @@ import { tenant } from './tenant.entity';
 import { customer } from '../tenant';
 import { userRoles } from './user-roles.entity';
 import { BaseEntityHelper } from '../../helpers/base-entity.helper';
+import { executor } from '../tenant/executor.entity';
 
 const schemaMain = d.pgSchema('main');
 
@@ -32,6 +33,8 @@ export const user = schemaMain.table('user', {
   avatarUrl: d.varchar('avatar_url'),
   tenantId: d.integer('tenant_id').references(() => tenant.id),
   customerId: d.uuid('customer_id').references(() => customer.id),
+  executorId: d.uuid('executor_id').references(() => executor.id),
+  ...BaseEntityHelper.timestampColumns,
 });
 
 export const userRelations = relations(user, ({ one, many }) => ({
@@ -44,7 +47,12 @@ export const userRelations = relations(user, ({ one, many }) => ({
     fields: [user.customerId],
     references: [customer.id],
   }), // ONE TO MANY RELATION
+  executor: one(executor, {
+    fields: [user.executorId],
+    references: [executor.id],
+  }), // ONE TO ONE RELATION
 }));
 
 export type UserEntity = typeof user.$inferSelect;
-export type UserEntityInsert = typeof user.$inferInsert;
+export type UserEntityInsert = Partial<UserEntity>;
+// export type UserEntityInsert = typeof user.$inferInsert;

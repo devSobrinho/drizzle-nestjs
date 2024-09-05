@@ -4,12 +4,20 @@ import { categoryProduct } from './category-product.entity';
 import { BaseEntityHelper } from '../../helpers/base-entity.helper';
 
 // ------- CATEGORY TABLE ---------
-export const category = d.pgTable('category', {
-  ...BaseEntityHelper.idPrimaryKey,
-  name: d.varchar('name', { length: 256 }).notNull(),
-  description: d.varchar('description', { length: 256 }).notNull(),
-  ...BaseEntityHelper.timestampColumns,
-});
+export const category = d.pgTable(
+  'category',
+  {
+    ...BaseEntityHelper.idPrimaryKey,
+    name: d.varchar('name', { length: 256 }).notNull(),
+    description: d.varchar('description', { length: 256 }).notNull(),
+    ...BaseEntityHelper.timestampColumns,
+  },
+  (table) => {
+    return {
+      nameIdx: d.uniqueIndex('category_name_idx').on(table.name),
+    };
+  },
+);
 
 // RELATION
 export const categoryRelations = relations(category, ({ many }) => ({

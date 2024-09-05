@@ -5,6 +5,7 @@ import { orderItem } from './order-item.entity';
 import { payment } from './payment.entity';
 import { address } from './address.entity';
 import { BaseEntityHelper } from '../../helpers/base-entity.helper';
+import { coupon } from './coupon.entity';
 
 export enum ORDER_STATUS_ENUM {
   ACTIVATED = 'a',
@@ -21,20 +22,29 @@ export const statusEnum = d.pgEnum('status', [
 ]);
 
 // ------- ORDER TABLE ---------
-export const order = d.pgTable('order', {
-  ...BaseEntityHelper.idPrimaryKey,
-  orderDate: d.timestamp('order_date').notNull(),
-  status: statusEnum('status').notNull(),
-  totalAmount: d.decimal('total_amount').notNull(),
-  number: d.varchar('number', { length: 256 }).notNull(),
-  complement: d.varchar('complement', { length: 256 }),
-  addressId: d.uuid('address_id').references(() => address.id),
-  customerId: d
-    .uuid('customer_id')
-    .notNull()
-    .references(() => customer.id),
-  ...BaseEntityHelper.timestampColumns,
-});
+export const order = d.pgTable(
+  'order',
+  {
+    ...BaseEntityHelper.idPrimaryKey,
+    orderDate: d.timestamp('order_date').notNull(),
+    status: statusEnum('status').notNull(),
+    totalAmount: d.decimal('total_amount').notNull(),
+    number: d.varchar('number', { length: 256 }).notNull(),
+    complement: d.varchar('complement', { length: 256 }),
+    addressId: d.uuid('address_id').references(() => address.id),
+    customerId: d
+      .uuid('customer_id')
+      .notNull()
+      .references(() => customer.id),
+    couponId: d.uuid('coupon_id').references(() => coupon.id),
+    ...BaseEntityHelper.timestampColumns,
+  },
+  (table) => {
+    return {
+      statusIdx: d.index('order_status_idx').on(table.status),
+    };
+  },
+);
 
 // RELATIONS
 export const orderRelations = relations(order, ({ one, many }) => ({
@@ -47,7 +57,11 @@ export const orderRelations = relations(order, ({ one, many }) => ({
   address: one(address, {
     fields: [order.addressId],
     references: [address.id],
-  }), // ONE TO ONE RELATION
+  }), // ONE TO MAY RELATION
+  coupon: one(coupon, {
+    fields: [order.couponId],
+    references: [coupon.id],
+  }), // ONE TO MANY RELATION
 }));
 
 export type OrderEntity = typeof order.$inferSelect;

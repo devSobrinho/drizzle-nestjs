@@ -6,14 +6,22 @@ import { user } from '../main';
 import { BaseEntityHelper } from '../../helpers/base-entity.helper';
 
 // ------- CUSTOMER TABLE ---------
-export const customer = d.pgTable('customer', {
-  ...BaseEntityHelper.idPrimaryKey,
-  firstName: d.varchar('first_name', { length: 256 }).notNull(),
-  lastName: d.varchar('last_name', { length: 256 }).notNull(),
-  email: d.varchar('email', { length: 256 }).notNull(),
-  phone: d.varchar('phone', { length: 256 }).notNull(),
-  ...BaseEntityHelper.timestampColumns,
-});
+export const customer = d.pgTable(
+  'customer',
+  {
+    ...BaseEntityHelper.idPrimaryKey,
+    firstName: d.varchar('first_name', { length: 256 }).notNull(),
+    lastName: d.varchar('last_name', { length: 256 }).notNull(),
+    email: d.varchar('email', { length: 256 }).notNull(),
+    phone: d.varchar('phone', { length: 256 }).notNull(),
+    ...BaseEntityHelper.timestampColumns,
+  },
+  (table) => {
+    return {
+      emailIdx: d.uniqueIndex('customer_email_idx').on(table.email),
+    };
+  },
+);
 
 // RELATIONS
 export const customerRelations = relations(customer, ({ many }) => ({

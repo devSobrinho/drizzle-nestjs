@@ -3,6 +3,7 @@ import * as d from 'drizzle-orm/pg-core';
 import { order } from './order.entity';
 import { product } from './product.entity';
 import { BaseEntityHelper } from '../../helpers/base-entity.helper';
+import { schedule } from './schedule.entity';
 
 // ------- ORDER ITEM TABLE *PIVOT CUSTOM*---------
 export const orderItem = d.pgTable('order_item', {
@@ -21,7 +22,7 @@ export const orderItem = d.pgTable('order_item', {
 });
 
 // RELATIONS
-export const orderItemRelations = relations(orderItem, ({ one }) => ({
+export const orderItemRelations = relations(orderItem, ({ one, many }) => ({
   order: one(order, {
     fields: [orderItem.orderId],
     references: [order.id],
@@ -30,6 +31,7 @@ export const orderItemRelations = relations(orderItem, ({ one }) => ({
     fields: [orderItem.productId],
     references: [product.id],
   }),
+  schedules: many(schedule), // MANY TO ONE RELATION
 }));
 
 export type OrderItemEntity = typeof orderItem.$inferSelect;

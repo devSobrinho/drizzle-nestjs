@@ -9,12 +9,20 @@ export const customerFavoriteAddresses = d.pgTable(
   'customer_favorite_addresses',
   {
     ...BaseEntityHelper.idPrimaryKey,
+    name: d.varchar('name', { length: 255 }).notNull(),
     default: d.boolean('default').notNull(),
-    number: d.varchar('number', { length: 256 }).notNull(),
-    complement: d.varchar('complement', { length: 256 }),
+    number: d.varchar('number', { length: 255 }).notNull(),
+    complement: d.varchar('complement', { length: 255 }),
     addressId: d.uuid('address_id').references(() => address.id),
     customerId: d.uuid('customer_id').references(() => customer.id),
     ...BaseEntityHelper.timestampColumns,
+  },
+  (table) => {
+    return {
+      nameIdx: d
+        .uniqueIndex('customer_favorite_addresses_name_idx')
+        .on(table.name),
+    };
   },
 );
 
