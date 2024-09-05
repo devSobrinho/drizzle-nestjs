@@ -12,7 +12,10 @@ import { BucketClientConfig } from './bucket-cliente.config';
 export class MinIoClient implements BucketClient {
   private client: MinIo.Client;
   constructor() {
-    this.client = new MinIo.Client(BucketClientConfig.params);
+    const client = new MinIo.Client(BucketClientConfig.params);
+    BucketClientConfig.start(client).then(() => {
+      this.client = client;
+    });
   }
 
   public async createBucket(bucketName: string) {
@@ -50,13 +53,20 @@ export class MinIoClient implements BucketClient {
   ) {
     const exists = await this.existBucket(bucketName);
     if (!exists) throw new NotFoundException('Bucket does not exist.');
-    return await this.client.putObject(
+    const response = await this.client.putObject(
       bucketName,
       objectName,
       stream,
       size,
       metaData,
     );
+    const presigned = await this.client.presignedGetObject(
+      bucketName,
+      objectName,
+      24 * 60 * 60,
+    );
+
+    return { ...response, presigned };
   }
 
   public async removeObject(bucketName: string, objectName: string) {

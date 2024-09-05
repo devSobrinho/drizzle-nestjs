@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import {
+  IsBoolean,
   IsInt,
   IsOptional,
   IsString,
@@ -7,6 +8,7 @@ import {
   MinLength,
   validateSync,
 } from 'class-validator';
+import * as MinIo from 'minio';
 
 @Injectable()
 export class BucketClientConfig {
@@ -30,15 +32,18 @@ export class BucketClientConfig {
     const credentialsDto = new BucketClientCredentialsDTO();
     Object.assign(credentialsDto, {
       ...process.env,
-      BUCKET_PORT: +process.env.DB_PORT,
+      BUCKET_PORT: +process.env.BUCKET_PORT,
+      BUCKET_USE_SSL: process.env.BUCKET_USE_SSL === 'true',
     });
 
     const errors = validateSync(credentialsDto, { whitelist: true });
     if (errors.length > 0)
       throw new Error(`Bucket credentials are invalid: ${errors}`);
-    const isProduction = credentialsDto.NODE_ENV === 'production';
-    const USE_SSL = isProduction;
-    return { ...credentialsDto, USE_SSL };
+    return { ...credentialsDto, USE_SSL: credentialsDto.BUCKET_USE_SSL };
+  }
+
+  static async start(client: MinIo.Client) {
+    return await client.bucketExists('teste');
   }
 }
 
@@ -55,7 +60,10 @@ class BucketClientCredentialsDTO {
   @IsString()
   @MinLength(1)
   BUCKET_SECRET_KEY: string;
+  @IsBoolean()
+  @IsOptional()
+  BUCKET_USE_SSL?: boolean;
   @IsString()
   @IsOptional()
-  NODE_ENV: string;
+  BUCKET_DEFAULT_NAME?: string;
 }
