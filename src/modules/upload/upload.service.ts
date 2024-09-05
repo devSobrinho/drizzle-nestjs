@@ -11,7 +11,7 @@ export class UploadService {
     const fileExtension = file.mimetype.split('/')[1].toLowerCase();
     const fileName = `${uuid()}-${new Date().getTime()}.${fileExtension}`;
     const contentType = file.mimetype;
-    await this.minIoClient.uploadObject(
+    const response = await this.minIoClient.uploadObject(
       bucketName,
       fileName,
       file.buffer,
@@ -19,7 +19,7 @@ export class UploadService {
       { 'Content-Type': contentType },
     );
 
-    return { bucketName, fileName, contentType };
+    return { bucketName, fileName, contentType, presigned: response.presigned };
   }
 
   async uploadBase64(bucketName: string, base64: string) {
@@ -31,7 +31,7 @@ export class UploadService {
     const fileExtension = contentType.split('/')[1].toLowerCase();
     const fileName = `${uuid()}-${new Date().getTime()}.${fileExtension}`;
     const buffer = Buffer.from(base64Data, 'base64');
-    await this.minIoClient.uploadObject(
+    const response = await this.minIoClient.uploadObject(
       bucketName,
       fileName,
       buffer,
@@ -39,7 +39,7 @@ export class UploadService {
       { 'Content-Type': contentType },
     );
 
-    return { bucketName, fileName, contentType };
+    return { bucketName, fileName, contentType, presigned: response.presigned };
   }
 
   async getObject(bucketName: string, objectName: string) {
