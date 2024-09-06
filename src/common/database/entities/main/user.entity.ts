@@ -23,19 +23,26 @@ export const userStatusEnum = schemaMain.enum('status', [
   USER_STATUS_ENUM.PENDING,
 ]);
 
-export const user = schemaMain.table('user', {
-  ...BaseEntityHelper.idPrimaryKey,
-  email: d.varchar('email').notNull().unique(),
-  password: d.varchar('password').notNull(),
-  status: userStatusEnum('status').notNull(),
-  passwordResetCode: d.varchar('password_reset_code', { length: 6 }),
-  passwordResetExpiresAt: d.timestamp('password_reset_expires_at'),
-  avatarUrl: d.varchar('avatar_url'),
-  tenantId: d.integer('tenant_id').references(() => tenant.id),
-  customerId: d.uuid('customer_id').references(() => customer.id),
-  executorId: d.uuid('executor_id').references(() => executor.id),
-  ...BaseEntityHelper.timestampColumns,
-});
+export const user = schemaMain.table(
+  'user',
+  {
+    ...BaseEntityHelper.idPrimaryKey,
+    email: d.varchar('email').notNull().unique(),
+    password: d.varchar('password').notNull(),
+    status: userStatusEnum('status').notNull(),
+    passwordResetCode: d.varchar('password_reset_code', { length: 6 }),
+    passwordResetExpiresAt: d.timestamp('password_reset_expires_at'),
+    avatarUrl: d.varchar('avatar_url'),
+    tenantId: d.integer('tenant_id').references(() => tenant.id),
+    customerId: d.uuid('customer_id'),
+    executorId: d.uuid('executor_id'),
+    ...BaseEntityHelper.timestampColumns,
+  },
+  (table) => ({
+    customerIdIdx: d.index('user_customer_id_idx').on(table.customerId),
+    executorIdIdx: d.index('user_executor_id_idx').on(table.executorId),
+  }),
+);
 
 export const userRelations = relations(user, ({ one, many }) => ({
   tenant: one(tenant, {
