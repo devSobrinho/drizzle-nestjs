@@ -9,4 +9,7 @@ export * from './order-item.entity';
 export * from './order.entity';
 export * from './payment.entity';
 export * from './product.entity';
+export * from './product-variant.entity';
+export * from './product-variant-type.entity';
+export * from './variant-type.entity';
 export * from './warehouse.entity';

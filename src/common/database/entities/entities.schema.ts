@@ -19,6 +19,9 @@ export * from './tenant/order-item.entity';
 export * from './tenant/order.entity';
 export * from './tenant/payment.entity';
 export * from './tenant/product.entity';
+export * from './tenant/product-variant.entity';
+export * from './tenant/product-variant-type.entity';
+export * from './tenant/variant-type.entity';
 export * from './tenant/warehouse.entity';
 
 export const EntitiesSchema = {
