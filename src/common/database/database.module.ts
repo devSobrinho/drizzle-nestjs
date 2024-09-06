@@ -6,6 +6,7 @@ import { DatabaseConfig } from './configs/database.config';
 import { DrizzleModule } from './drizzle.module';
 import { CustomerRepository } from './repositories/customer.repository';
 import { UserRepository } from './repositories/user.repository';
+import { TransactionService } from './transaction.service';
 
 const Repositories = [UserRepository, CustomerRepository];
 
@@ -17,7 +18,7 @@ const Repositories = [UserRepository, CustomerRepository];
     RequestContextModule,
     DrizzleModule,
   ],
-  providers: [...Repositories, DatabaseConfig],
-  exports: Repositories,
+  providers: [...Repositories, DatabaseConfig, TransactionService],
+  exports: [...Repositories, TransactionService],
 })
 export class DatabaseModule {}
