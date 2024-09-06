@@ -2,7 +2,7 @@ import 'dotenv/config';
 import { DatabaseMigrationsHelper } from '../helpers/database-migrations.helper';
 import { migrationReplaceAll } from './migration-replace.script';
 
-const migrationsFolderMain = './src/common/database/migrations/app';
+const migrationsFolderMain = './src/common/database/drizzle/migrations/app';
 
 async function startMigrations() {
   try {

@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { sql } from 'drizzle-orm';
 import { PostgresJsDatabase } from 'drizzle-orm/postgres-js';
-import { EntitiesSchema } from 'src/common/database/entities/entities.schema';
+import { EntitiesSchema } from 'src/common/database/drizzle/entities/entities.schema';
 
 @Injectable()
 export class BaseFactory {

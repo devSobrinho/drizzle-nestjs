@@ -6,8 +6,8 @@ import { instanceToPlain, plainToClass } from 'class-transformer';
 import {
   USER_STATUS_ENUM,
   UserEntity,
-} from 'src/common/database/entities/main';
-import { UserRepository } from 'src/common/database/repositories/user.repository';
+} from 'src/common/database/drizzle/entities/main';
+import { UserRepository } from 'src/common/database/drizzle/repositories/user.repository';
 import { MessageResponseDTO } from 'src/common/interfaces/response-default';
 import { HASHING_SERVICE } from 'src/common/modules/hashing/hashing.constant';
 import { HashingService } from 'src/common/modules/hashing/hashing.interface';

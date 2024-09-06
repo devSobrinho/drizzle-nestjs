@@ -8,8 +8,8 @@ import {
   TenantEntity,
   USER_STATUS_ENUM,
   UserEntity,
-} from 'src/common/database/entities/entities.schema';
-import { TransactionService } from 'src/common/database/transaction.service';
+} from 'src/common/database/drizzle/entities/entities.schema';
+import { TransactionDrizzleService } from 'src/common/database/drizzle/transaction.service';
 import { FakerHelper } from 'src/common/helpers/faker';
 import { BcryptHashingService } from 'src/common/modules/hashing/hashing.service';
 import { SeedAdminTenantDto } from '../dtos/admin-tenant.dto';
@@ -20,7 +20,7 @@ import { BaseFactory } from './base.factory';
 @Injectable()
 export class UserFactory {
   constructor(
-    private readonly transactionService: TransactionService,
+    private readonly transactionDrizzleService: TransactionDrizzleService,
     private readonly baseFactory: BaseFactory,
   ) {}
 
@@ -85,7 +85,7 @@ export class UserFactory {
   }
 
   public async createUserAdminTenant({ qtd }: SeedAdminTenantDto) {
-    return await this.transactionService.execute(async (db) => {
+    return await this.transactionDrizzleService.execute(async (db) => {
       const users: Partial<UserEntity>[] = [];
       const tenants: Partial<TenantEntity>[] = [];
       for (let index = 0; index < qtd; index++) {
@@ -112,7 +112,7 @@ export class UserFactory {
     tenantId,
     qtd,
   }: SeedCustomerAdminDto) {
-    return await this.transactionService.execute(async (db) => {
+    return await this.transactionDrizzleService.execute(async (db) => {
       const users: Partial<UserEntity>[] = [];
       const customers: Partial<CustomerEntity>[] = [];
       for (let index = 0; index < qtd; index++) {
@@ -142,7 +142,7 @@ export class UserFactory {
     customerId,
     qtd,
   }: SeedCustomerEmployeeDto) {
-    return await this.transactionService.execute(async (db) => {
+    return await this.transactionDrizzleService.execute(async (db) => {
       const users: Partial<UserEntity>[] = [];
       for (let index = 0; index < qtd; index++) {
         const customer = await db.query.user.findFirst({

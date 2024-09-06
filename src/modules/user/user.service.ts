@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { UserEntity } from 'src/common/database/entities/main';
-import { UserRepository } from 'src/common/database/repositories/user.repository';
+import { UserRepository } from 'src/common/database/drizzle/repositories/user.repository';
 import { IGetUser } from 'src/common/decorators/api/get-user.decorator';
 import { UploadService } from '../upload/upload.service';
 import { BUCKER_NAME } from 'src/common/constants/bucker.constant';
@@ -12,11 +11,8 @@ export class UserService {
     private readonly uploadService: UploadService,
   ) {}
 
-  async getById(id: string): Promise<UserEntity> {
-    return (await this.userRepository.getOneById(id, [
-      'id',
-      'email',
-    ])) as UserEntity;
+  async getById(id: string) {
+    return await this.userRepository.getOneById(id, ['id', 'email']);
   }
 
   async uploadAvatar(file: Express.Multer.File, user: IGetUser) {

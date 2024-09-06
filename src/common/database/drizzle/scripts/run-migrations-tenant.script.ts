@@ -1,7 +1,8 @@
 import 'dotenv/config';
 import { DatabaseMigrationsHelper } from '../helpers/database-migrations.helper';
 
-const migrationsFolder = './src/common/database/migrations/tenant_default';
+const migrationsFolder =
+  './src/common/database/drizzle/migrations/tenant_default';
 
 export async function startMigrationTenant(tenantId: number) {
   try {

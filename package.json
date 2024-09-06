@@ -18,14 +18,8 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "pg:migration:up": "drizzle-kit up --config src/common/database/configs/drizzle.config.ts",
-    "pg:migration:check": "drizzle-kit up --config src/common/database/configs/drizzle.config.ts",
-    "pg:migration:generate:custom": "drizzle-kit generate --custom --config src/common/database/configs/drizzle.config.ts",
-    "pg:migration:drop": "drizzle-kit drop --config src/common/database/configs/drizzle.config.ts",
-    "pg:migration:deploy": "tsx src/deploy.ts",
-    "pg:push": "drizzle-kit push --config src/common/database/configs/drizzle.config.ts",
-    "pg:migrate:all": "ts-node src/common/database/scripts/run-migrations.script.ts",
-    "pg:migration:generate:all": "drizzle-kit generate --config src/common/database/configs/drizzle.config.ts && drizzle-kit generate --config src/common/database/configs/drizzle-tenant-default.config.ts"
+    "drizzle:migrate:all": "ts-node src/common/database/drizzle/scripts/run-migrations.script.ts",
+    "drizzle:migration:generate:all": "drizzle-kit generate --config src/common/database/drizzle/drizzle.config.ts && drizzle-kit generate --config src/common/database/drizzle/drizzle-tenant-default.config.ts"
   },
   "dependencies": {
     "@faker-js/faker": "^9.0.0",

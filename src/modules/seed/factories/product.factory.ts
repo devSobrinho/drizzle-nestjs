@@ -7,21 +7,21 @@ import {
   EntitiesSchema,
   PRODUCT_STATUS_ENUM,
   PRODUCT_TYPE_ENUM,
-} from 'src/common/database/entities/entities.schema';
+} from 'src/common/database/drizzle/entities/entities.schema';
 import {
   ProductVariantEntity,
   VariantTypeEntity,
-} from 'src/common/database/entities/tenant';
-import { TransactionService } from 'src/common/database/transaction.service';
+} from 'src/common/database/drizzle/entities/tenant';
+import { TransactionDrizzleService } from 'src/common/database/drizzle/transaction.service';
 
-import * as VariantTypeSchema from '../../../common/database/entities/tenant/variant-type.entity';
+import * as VariantTypeSchema from '../../../common/database/drizzle/entities/tenant/variant-type.entity';
 import { CreateFullProductAndAssociationsDto } from '../dtos/create-full-product-and-associations.dto';
 import { BaseFactory } from './base.factory';
 
 @Injectable()
 export class ProductFactory {
   constructor(
-    private readonly transactionService: TransactionService,
+    private readonly transactionDrizzleService: TransactionDrizzleService,
     private readonly baseFactory: BaseFactory,
   ) {}
 
@@ -166,7 +166,7 @@ export class ProductFactory {
     qtd,
     tenantId,
   }: CreateFullProductAndAssociationsDto) {
-    return await this.transactionService.execute(async (db) => {
+    return await this.transactionDrizzleService.execute(async (db) => {
       await this.baseFactory.setSchema(db, tenantId);
       const categoryCreated = await this.createCategory(db);
       for (let index = 0; index < qtd; index++) {

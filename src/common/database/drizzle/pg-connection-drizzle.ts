@@ -1,6 +1,6 @@
 import { EntitiesSchema } from './entities/entities.schema';
 import { Pool } from 'pg';
-import { DatabaseConfig } from './configs/database.config';
+import { DatabaseConfig } from '../configs/database.config';
 import { drizzle, NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { sql } from 'drizzle-orm';
 

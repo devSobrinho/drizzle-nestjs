@@ -2,8 +2,8 @@ import { Inject } from '@nestjs/common';
 import { eq, Table } from 'drizzle-orm';
 import { PostgresJsDatabase } from 'drizzle-orm/postgres-js';
 import { DatabaseHelper } from '../helpers/database.helper';
-import { DatabaseConfig } from '../configs/database.config';
-import { BaseRepositoryImpl } from '../interfaces/base-repository.interface';
+import { DatabaseConfig } from '../../configs/database.config';
+import { BaseRepositoryImpl } from '../../interfaces/base-repository.interface';
 import { PG_CONNECTION } from 'src/common/constants/pg-connection.constant';
 
 export class BaseRepository<

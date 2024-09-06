@@ -2,8 +2,8 @@
 /dist
 /node_modules
 /build
-/src/common/database/migrations/app
-/src/common/database/migrations/tenant_default
+/src/common/database/drizzle/migrations/app
+/src/common/database/drizzle/migrations/tenant_default
 
 # Logs
 logs
