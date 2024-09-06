@@ -12,16 +12,20 @@ import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { MailModule } from './modules/mail/mail.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
+import { CacheModule } from './common/modules/cache/cache.module';
+import { SeedModule } from './modules/seed/seed.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     EventEmitterModule.forRoot(),
     RequestContextModule,
+    CacheModule,
     UploadModule,
     UserModule,
     AuthModule,
     MailModule,
+    SeedModule,
   ],
   controllers: [AppController],
   providers: [
