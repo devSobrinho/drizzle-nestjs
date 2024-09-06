@@ -4,17 +4,13 @@ import { DatabaseConfig } from './configs/database.config';
 import { drizzle, NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { sql } from 'drizzle-orm';
 
-export const PG_CONNECTION = 'PG_CONNECTION';
-
-export class ConnectionManager {
-  private static prefix = 'tenant_';
+export class ConnectionManagerDrizzle {
   static instances: Map<string, NodePgDatabase<typeof EntitiesSchema>> =
     new Map();
 
   public static async getConnection(
     schemaName: string,
   ): Promise<NodePgDatabase<typeof EntitiesSchema>> {
-    // return this.connection;
     if (this.instances.has(schemaName)) {
       return this.instances.get(schemaName);
     }
@@ -24,7 +20,7 @@ export class ConnectionManager {
     });
     const db = drizzle(pool, { schema: EntitiesSchema });
     await db.execute(sql.raw(`SET schema '${schemaName}'`));
-    ConnectionManager.setConnection(db, schemaName);
+    ConnectionManagerDrizzle.setConnection(db, schemaName);
     return db;
   }
 

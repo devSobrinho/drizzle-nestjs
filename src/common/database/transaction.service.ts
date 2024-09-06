@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { PG_CONNECTION } from './pg-connection';
 import { PostgresJsDatabase } from 'drizzle-orm/postgres-js';
 import { EntitiesSchema } from './entities/entities.schema';
 import { DatabaseConfig } from './configs/database.config';
+import { PG_CONNECTION } from '../constants/pg-connection.constant';
 
 @Injectable()
 export class TransactionService {

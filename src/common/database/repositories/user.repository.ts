@@ -3,9 +3,9 @@ import { PostgresJsDatabase } from 'drizzle-orm/postgres-js';
 import * as UserSchema from '../entities/main/user.entity';
 
 import { BaseRepository } from './base.repository';
-import { PG_CONNECTION } from '../pg-connection';
 import { DatabaseConfig } from '../configs/database.config';
 import { eq } from 'drizzle-orm';
+import { PG_CONNECTION } from 'src/common/constants/pg-connection.constant';
 
 @Injectable()
 export class UserRepository extends BaseRepository<

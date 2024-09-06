@@ -4,7 +4,8 @@ import { ConfigModule } from '@nestjs/config';
 import { RequestContextModule } from '../modules/request-context/request-context.module';
 import { RequestContextService } from '../modules/request-context/request-context.service';
 import { DatabaseConfig } from './configs/database.config';
-import { ConnectionManager, PG_CONNECTION } from './pg-connection';
+import { ConnectionManagerDrizzle } from './pg-connection-drizzle';
+import { PG_CONNECTION } from '../constants/pg-connection.constant';
 
 @Module({
   imports: [
@@ -25,7 +26,7 @@ import { ConnectionManager, PG_CONNECTION } from './pg-connection';
         let schemaName = dbConfig.schemaName;
         const user = requestContextService.getUser();
         if (user?.tenantId) schemaName = `tenant_${user.tenantId}`;
-        const db = ConnectionManager.getConnection(schemaName);
+        const db = ConnectionManagerDrizzle.getConnection(schemaName);
         return db;
       },
     },
