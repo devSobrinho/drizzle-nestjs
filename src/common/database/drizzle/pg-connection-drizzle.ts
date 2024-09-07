@@ -9,7 +9,7 @@ export class ConnectionManagerDrizzle {
     new Map();
 
   public static async getConnection(
-    schemaName: string,
+    schemaName = 'main',
   ): Promise<NodePgDatabase<typeof EntitiesSchema>> {
     if (this.instances.has(schemaName)) {
       return this.instances.get(schemaName);
