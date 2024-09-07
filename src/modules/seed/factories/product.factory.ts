@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { Injectable } from '@nestjs/common';
-import { sql } from 'drizzle-orm';
+import { eq } from 'drizzle-orm';
 import { PostgresJsDatabase } from 'drizzle-orm/postgres-js';
 import {
   CategoryEntity,
@@ -14,7 +14,7 @@ import {
 } from 'src/common/database/drizzle/entities/tenant';
 import { TransactionDrizzleService } from 'src/common/database/drizzle/transaction.service';
 
-import * as VariantTypeSchema from '../../../common/database/drizzle/entities/tenant/variant-type.entity';
+import { MockVariantsTypesName } from '../_mocks/_variant-type.mock';
 import { CreateFullProductAndAssociationsDto } from '../dtos/create-full-product-and-associations.dto';
 import { BaseFactory } from './base.factory';
 
@@ -29,7 +29,7 @@ export class ProductFactory {
     db: PostgresJsDatabase<typeof EntitiesSchema>,
     productVariantId: string,
     variantTypeId: string,
-    type: 'Color' | 'Size',
+    type: string,
   ) {
     let variantValue = '';
     if (type === 'Color') {
@@ -38,62 +38,26 @@ export class ProductFactory {
       variantValue = ['P', 'M', 'G', 'GG', 'XG'][Math.floor(Math.random() * 5)];
     }
 
-    try {
-      await db
-        .insert(EntitiesSchema.productVariantType)
-        .values({
-          productVariantId,
-          variantTypeId,
-          variantValue,
-        })
-        .returning();
-    } catch (error) {}
+    await db
+      .insert(EntitiesSchema.productVariantType)
+      .values({
+        productVariantId,
+        variantTypeId,
+        variantValue,
+      })
+      .returning();
   }
 
-  private async createVariantsTypes(
+  private async createVariantType(
     db: PostgresJsDatabase<typeof EntitiesSchema>,
-    names: string[],
+    name: string,
   ) {
-    const variantsTypes: VariantTypeEntity[] = [];
-    for (let index = 0; index < names.length; index++) {
-      const name = names[index];
-      try {
-        const result = await db
-          .insert(EntitiesSchema.variantType)
-          .values({ name })
-          .returning();
+    const result = await db
+      .insert(EntitiesSchema.variantType)
+      .values({ name })
+      .returning();
 
-        variantsTypes.push(result[0]);
-      } catch (error) {
-        console.log('error', error);
-
-        try {
-          // const result = await db.query.variantType
-          //   .findFirst({
-          //     where: sql`${EntitiesSchema.variantType.name} = '${name}'`,
-          //   })
-          // .execute();
-          console.log(Object.keys(db._.schema));
-
-          const result = await db
-            .select()
-            .from(VariantTypeSchema.variantType)
-            .where(
-              sql`${VariantTypeSchema.variantType.name} In('Color', 'Size')`,
-            )
-            .execute();
-          // .where(eq(EntitiesSchema.variantType.name, name))
-          // .execute()
-          console.log('result', result);
-
-          // variantsTypes.push(...result);
-        } catch (error) {
-          console.log('error2', error);
-          throw error;
-        }
-      }
-    }
-    return variantsTypes;
+    return result[0];
   }
 
   private async createdProductVariants(
@@ -179,34 +143,52 @@ export class ProductFactory {
           productId,
           20,
         );
-        // const typesName = [
-        //   MockVariantsTypesName.Color,
-        //   MockVariantsTypesName.Size,
-        // ];
-        // const variantsTypes = await this.createVariantsTypes(db, typesName);
-        // const variantsTypesFiltered = variantsTypes.filter((item) =>
-        //   typesName.includes(item.name),
-        // );
+        const variantsTypes: VariantTypeEntity[] = [];
+        const namesVariantTypes = [
+          MockVariantsTypesName.Color,
+          MockVariantsTypesName.Size,
+        ];
+        for (let index = 0; index < namesVariantTypes.length; index++) {
+          const name = namesVariantTypes[index];
+          const variant = await db
+            .transaction(async (db) => {
+              return await this.createVariantType(db, name);
+            })
+            .catch(async () => {
+              const result = await db
+                .select()
+                .from(EntitiesSchema.variantType)
+                .where(eq(EntitiesSchema.variantType.name, name));
+              return result[0];
+            });
+          variantsTypes.push(variant);
+        }
         for (let index = 0; index < productsVariants.length; index++) {
           const productVariant = productsVariants[index];
           for (let index = 0; index < 1; index++) {
             await this.associateProductVariantWithVariantTypeAndGenerationVariantValue(
               db,
               productVariant.id,
-              'b5f94416-212d-418e-88d7-3eeb38a4d02d',
-              'Color',
+              variantsTypes[0].id,
+              namesVariantTypes[0],
             );
             await this.associateProductVariantWithVariantTypeAndGenerationVariantValue(
               db,
               productVariant.id,
-              'bb00afa4-5878-48cf-a25f-20f5c708e746',
-              'Size',
+              variantsTypes[1].id,
+              namesVariantTypes[1],
             );
           }
         }
       }
-      // return products;
-      return await db.query.product.findMany();
+      return await db.query.product.findMany({
+        with: {
+          categoryProducts: { with: { category: true } },
+          variants: {
+            with: { productVariantTypes: { with: { variantType: true } } },
+          },
+        },
+      });
     });
   }
 }
