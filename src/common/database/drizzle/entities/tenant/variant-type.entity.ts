@@ -12,7 +12,7 @@ export const variantType = d.pgTable(
     name: d.varchar('name', { length: 256 }).notNull(),
   },
   (table) => ({
-    unique_variant_type_name: d
+    uniqueVariantTypeName: d
       .uniqueIndex('unique_variant_type_name')
       .on(table.name),
   }),

@@ -21,7 +21,7 @@ export const productVariantType = d.pgTable(
       .references(() => variantType.id),
   },
   (table) => ({
-    unique_product_variant_type: d
+    uniqueProductVariantTypeIdx: d
       .uniqueIndex('unique_product_variant_type_value_idx')
       .on(table.productVariantId, table.variantTypeId, table.variantValue),
   }),

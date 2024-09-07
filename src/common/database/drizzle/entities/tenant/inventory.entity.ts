@@ -20,7 +20,7 @@ export const inventory = d.pgTable(
   },
   (table) => {
     return {
-      inventory_name_idx: d.index('inventory_name_idx').on(table.name),
+      inventoryNameIdx: d.index('inventory_name_idx').on(table.name),
     };
   },
 );

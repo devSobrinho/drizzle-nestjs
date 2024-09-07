@@ -19,14 +19,24 @@ export const roleStatusEnum = schemaMain.enum('status', [
   ROLE_STATUS_ENUM.DEACTIVATED,
 ]);
 
-export const role = schemaMain.table('role', {
-  ...BaseEntityHelper.idPrimaryKey,
-  name: d.varchar('name').notNull(),
-  description: d.varchar('description'),
-  status: roleStatusEnum('status').notNull(),
-  tenantId: d.integer('tenant_id').references(() => tenant.id),
-  ...BaseEntityHelper.timestampColumns,
-});
+export const role = schemaMain.table(
+  'role',
+  {
+    ...BaseEntityHelper.idPrimaryKey,
+    name: d.varchar('name').notNull(),
+    description: d.varchar('description'),
+    status: roleStatusEnum('status').notNull(),
+    tenantId: d.integer('tenant_id').references(() => tenant.id),
+    ...BaseEntityHelper.timestampColumns,
+  },
+  (table) => {
+    return {
+      nameUniqueTenantIdIdx: d
+        .uniqueIndex('permission_name_unique_tenant_id_idx')
+        .on(table.tenantId, table.name),
+    };
+  },
+);
 
 // RELATIONS
 export const roleRelations = relations(role, ({ one, many }) => ({

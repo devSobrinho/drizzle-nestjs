@@ -35,7 +35,7 @@ export const productVariant = d.pgTable(
   },
   (table) => {
     return {
-      unique_product_variant_barcode: d
+      uniqueProductVariantBarcodeIdx: d
         .uniqueIndex('unique_product_variant_barcode_idx')
         .on(table.productId, table.barcode),
     };

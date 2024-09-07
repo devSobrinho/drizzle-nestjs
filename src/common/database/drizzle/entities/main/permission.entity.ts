@@ -7,12 +7,20 @@ import { BaseEntityHelper } from '../../helpers/base-entity.helper';
 const schemaMain = d.pgSchema('main');
 
 // ------- PERMISSION TABLE ---------
-export const permission = schemaMain.table('permission', {
-  ...BaseEntityHelper.idPrimaryKey,
-  name: d.varchar('name').notNull(),
-  description: d.varchar('description'),
-  ...BaseEntityHelper.timestampColumns,
-});
+export const permission = schemaMain.table(
+  'permission',
+  {
+    ...BaseEntityHelper.idPrimaryKey,
+    name: d.varchar('name').notNull(),
+    description: d.varchar('description'),
+    ...BaseEntityHelper.timestampColumns,
+  },
+  (table) => {
+    return {
+      nameUniqueIdx: d.uniqueIndex('permission_name_unique_idx').on(table.name),
+    };
+  },
+);
 
 // RELATIONS
 export const permissionRelations = relations(permission, ({ many }) => ({

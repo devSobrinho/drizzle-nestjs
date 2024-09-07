@@ -27,7 +27,7 @@ export const user = schemaMain.table(
   'user',
   {
     ...BaseEntityHelper.idPrimaryKey,
-    email: d.varchar('email').notNull().unique(),
+    email: d.varchar('email').notNull(),
     password: d.varchar('password').notNull(),
     status: userStatusEnum('status').notNull(),
     passwordResetCode: d.varchar('password_reset_code', { length: 6 }),
@@ -41,6 +41,9 @@ export const user = schemaMain.table(
   (table) => ({
     customerIdIdx: d.index('user_customer_id_idx').on(table.customerId),
     executorIdIdx: d.index('user_executor_id_idx').on(table.executorId),
+    emailIdx: d
+      .uniqueIndex('user_email_tenant_id_idx')
+      .on(table.tenantId, table.email),
   }),
 );
 
