@@ -7,8 +7,9 @@ import { DrizzleModule } from './drizzle/drizzle.module';
 import { CustomerRepository } from './drizzle/repositories/customer.repository';
 import { UserRepository } from './drizzle/repositories/user.repository';
 import { TransactionDrizzleService } from './drizzle/transaction.service';
+import { ProductRepository } from './drizzle/repositories/product.repository';
 
-const Repositories = [UserRepository, CustomerRepository];
+const Repositories = [ProductRepository, UserRepository, CustomerRepository];
 
 @Module({
   imports: [

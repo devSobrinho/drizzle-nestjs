@@ -7,6 +7,7 @@ const migrationsFolderMain = './src/common/database/drizzle/migrations/app';
 async function startMigrations() {
   try {
     await migrationReplaceAll();
+    //
     console.log('[MAIN] Migrations complete');
 
     const schemas = ['tenant_default', 'tenant_1', 'tenant_2'];

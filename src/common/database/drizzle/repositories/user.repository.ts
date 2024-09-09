@@ -22,8 +22,6 @@ export class UserRepository extends BaseRepository<
     super(db, UserSchema.user, dbConfig);
   }
 
-  seuDb = this.db;
-
   async getUserByEmailVerified(email: string): Promise<UserSchema.UserEntity> {
     const result = await this.db.query.user.findFirst({
       where: eq(UserSchema.user.email, email),
